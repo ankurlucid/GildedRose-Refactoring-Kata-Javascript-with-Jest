@@ -6,8 +6,7 @@ class GildedRose {
   updateQuality() {
     for (let item of this.items) {
 
-      // "Sulfuras" never has to be sold or decreases in Quality
-      if (item.name === "Sulfuras") continue;
+      if (item.name === "Sulfuras") continue;   // "Sulfuras" never has to be sold or decreases in Quality
 
       item.sellIn -= 1;
 
@@ -18,6 +17,23 @@ class GildedRose {
           if (item.sellIn < 0) {
             this.increaseQuality(item);   // "Aged Brie" actually increases in Quality the older it gets
           }
+          break;
+
+        case "Backstage passes":       //  "Backstage passes" increases in Quality as its SellIn value approaches
+          this.increaseQuality(item);
+          if (item.sellIn < 11) {
+            this.increaseQuality(item);
+          }
+          if (item.sellIn < 6) {
+            this.increaseQuality(item);
+          }
+          if (item.sellIn < 0) {
+            item.quality = 0;
+          }
+          break;
+        
+        case "Conjured":
+          this.decreaseQuality(item, 2);   // "Conjured" items degrade in Quality twice as fast as normal items
           break;
 
         default:
@@ -31,13 +47,13 @@ class GildedRose {
 
   increaseQuality(item) {
     if (item.quality < 50) {
-      item.quality += 1;
+      item.quality += 1;       // The Quality of an item is never more than 50
     }
   }
 
   decreaseQuality(item, value = 1) {
     if (item.quality > 0) {
-      item.quality -= value;
+      item.quality -= value;   // The Quality of an item is never negative
     }
   }
 }
